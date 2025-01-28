@@ -8,7 +8,7 @@ namespace Brygady.Data{
         public List<TripTimeDto>? Times { get; set; }
 
     }
-    public class NewTripDto{
+        public class NewTripDto{
         public int Id { get; set; }
         public int TypeOfDayId { get; set; }
     }
