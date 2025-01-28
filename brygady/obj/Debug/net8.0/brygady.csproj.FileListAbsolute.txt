@@ -306,3 +306,4 @@ C:\Users\matwa\Documents\BusMan\brygady\obj\Debug\net8.0\refint\brygady.dll
 C:\Users\matwa\Documents\BusMan\brygady\obj\Debug\net8.0\brygady.pdb
 C:\Users\matwa\Documents\BusMan\brygady\obj\Debug\net8.0\brygady.genruntimeconfig.cache
 C:\Users\matwa\Documents\BusMan\brygady\obj\Debug\net8.0\ref\brygady.dll
+C:\Users\matwa\Documents\BusMan\brygady\obj\Debug\net8.0\brygady.sourcelink.json
