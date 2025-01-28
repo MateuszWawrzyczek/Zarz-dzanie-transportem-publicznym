@@ -11,8 +11,7 @@ namespace Brygady.Data{
         public int brigade_trip_id {get; set;}
         public int trip_id {get; set;}   
     }
-    public class BrigadeUpdateDto
-    {
+    public class BrigadeUpdateDto{
         public int TypeOfDayId { get; set; }
         public List<BrigadeDto>? Brigades { get; set; } = new();
     }
