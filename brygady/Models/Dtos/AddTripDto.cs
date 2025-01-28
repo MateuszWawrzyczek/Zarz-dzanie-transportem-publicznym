@@ -1,10 +1,11 @@
-namespace Brygady.Data{    
+namespace Brygady.Data
+{    
     public class TripRequest
     {
         public int Id { get; set; }
         public int TypeOfDayId { get; set; }
         public int VariantId { get; set; }
-        public int Direction { get; set; }  // Dodane pole Direction
+        public int Direction { get; set; }  
         public List<TripTimeDto>? Times { get; set; }
 
     }

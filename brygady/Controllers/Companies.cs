@@ -62,7 +62,6 @@ namespace Brygady.Controllers
             }
         }
 
-        // Dodanie firmy
         [HttpPost("add")]
         public async Task<IActionResult> AddCompany([FromBody] Company company)
         {
@@ -92,7 +91,6 @@ namespace Brygady.Controllers
             }
         }
 
-        // Edycja firmy
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> EditCompany(int id, [FromBody] Company company)
         {
@@ -123,7 +121,6 @@ namespace Brygady.Controllers
             }
         }
 
-        // Usuwanie firmy
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCompany(int id)
         {

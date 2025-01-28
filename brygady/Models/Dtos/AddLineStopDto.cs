@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace Brygady.Data{
+namespace Brygady.Data
+{
     public class AddLineStopDto
     {
         [Required]

@@ -49,7 +49,6 @@ namespace Brygady.Controllers
             }
             catch (Exception ex)
             {
-                // Obsługa błędów
                 return StatusCode(500, new { Message = "Wystąpił błąd podczas dodawania czasu przejazdu.", Error = ex.Message });
             }
         }

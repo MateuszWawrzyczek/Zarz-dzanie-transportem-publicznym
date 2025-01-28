@@ -69,7 +69,6 @@ namespace Brygady.Controllers
                     }
                 }
 
-                // Zwracamy pustą listę, jeśli nie znaleziono przystanków dla danego lineId
                 return Ok(lineStopsList);
             }
             catch (Exception ex)
@@ -79,95 +78,95 @@ namespace Brygady.Controllers
         }
 
 
-[HttpPost]
-public async Task<ActionResult> AddOrUpdateLineStops([FromBody] List<AddLineStopDto> lineStops)
-{
-    Console.Write(lineStops);
-    if (!ModelState.IsValid)
-    {
-        Console.WriteLine("Nieprawidłowy ModelState:", ModelState);
-        return BadRequest(ModelState);
-    }
-
-    if (lineStops == null || !lineStops.Any())
-    {
-        Console.WriteLine("Pusta lista lineStops:", lineStops);
-        return BadRequest("The lineStops list cannot be empty.");
-    }
-
-    try
-    {
-        using (var connection = new NpgsqlConnection(_connectionString))
+        [HttpPost]
+        public async Task<ActionResult> AddOrUpdateLineStops([FromBody] List<AddLineStopDto> lineStops)
         {
-            await connection.OpenAsync();
-
-            using (var transaction = await connection.BeginTransactionAsync())
+            Console.Write(lineStops);
+            if (!ModelState.IsValid)
             {
-                try
+                Console.WriteLine("Nieprawidłowy ModelState:", ModelState);
+                return BadRequest(ModelState);
+            }
+
+            if (lineStops == null || !lineStops.Any())
+            {
+                Console.WriteLine("Pusta lista lineStops:", lineStops);
+                return BadRequest("The lineStops list cannot be empty.");
+            }
+
+            try
+            {
+                using (var connection = new NpgsqlConnection(_connectionString))
                 {
-                    foreach (var lineStop in lineStops)
+                    await connection.OpenAsync();
+
+                    using (var transaction = await connection.BeginTransactionAsync())
                     {
-                        Console.WriteLine(lineStop.id.HasValue);
-                        Console.WriteLine(lineStop.id);
-
-                        if (lineStop.id.HasValue)
+                        try
                         {
-                            
-                            var updateQuery = @"
-                                UPDATE line_stops
-                                SET stop_id = @stopId, 
-                                    direction = @direction, 
-                                    ""order"" = @order
-                                WHERE id = @id;
-                            ";
-
-                            using (var updateCommand = new NpgsqlCommand(updateQuery, connection, transaction))
+                            foreach (var lineStop in lineStops)
                             {
-                                updateCommand.Parameters.AddWithValue("@id", lineStop.id);
-                                updateCommand.Parameters.AddWithValue("@stopId", lineStop.StopId);
-                                updateCommand.Parameters.AddWithValue("@direction", lineStop.Direction);
-                                updateCommand.Parameters.AddWithValue("@order", lineStop.Order);
+                                Console.WriteLine(lineStop.id.HasValue);
+                                Console.WriteLine(lineStop.id);
 
-                                await updateCommand.ExecuteNonQueryAsync();
+                                if (lineStop.id.HasValue)
+                                {
+                                    
+                                    var updateQuery = @"
+                                        UPDATE line_stops
+                                        SET stop_id = @stopId, 
+                                            direction = @direction, 
+                                            ""order"" = @order
+                                        WHERE id = @id;
+                                    ";
+
+                                    using (var updateCommand = new NpgsqlCommand(updateQuery, connection, transaction))
+                                    {
+                                        updateCommand.Parameters.AddWithValue("@id", lineStop.id);
+                                        updateCommand.Parameters.AddWithValue("@stopId", lineStop.StopId);
+                                        updateCommand.Parameters.AddWithValue("@direction", lineStop.Direction);
+                                        updateCommand.Parameters.AddWithValue("@order", lineStop.Order);
+
+                                        await updateCommand.ExecuteNonQueryAsync();
+                                    }
+                                }
+                                else 
+                                {
+                                    var insertQuery = @"
+                                        INSERT INTO line_stops (line_id, stop_id, direction, ""order"")
+                                        VALUES (@lineId, @stopId, @direction, @order);
+                                    ";
+
+                                    using (var insertCommand = new NpgsqlCommand(insertQuery, connection, transaction))
+                                    {
+                                        insertCommand.Parameters.AddWithValue("@lineId", lineStop.LineId);
+                                        insertCommand.Parameters.AddWithValue("@stopId", lineStop.StopId);
+                                        insertCommand.Parameters.AddWithValue("@direction", lineStop.Direction);
+                                        insertCommand.Parameters.AddWithValue("@order", lineStop.Order);
+
+                                        await insertCommand.ExecuteNonQueryAsync();
+                                    }
+                                }
                             }
+
+                            await transaction.CommitAsync();
+                            return Ok(new { message = "Line stops added or updated successfully" });
                         }
-                        else 
+                        catch (Exception err)
                         {
-                            var insertQuery = @"
-                                INSERT INTO line_stops (line_id, stop_id, direction, ""order"")
-                                VALUES (@lineId, @stopId, @direction, @order);
-                            ";
-
-                            using (var insertCommand = new NpgsqlCommand(insertQuery, connection, transaction))
-                            {
-                                insertCommand.Parameters.AddWithValue("@lineId", lineStop.LineId);
-                                insertCommand.Parameters.AddWithValue("@stopId", lineStop.StopId);
-                                insertCommand.Parameters.AddWithValue("@direction", lineStop.Direction);
-                                insertCommand.Parameters.AddWithValue("@order", lineStop.Order);
-
-                                await insertCommand.ExecuteNonQueryAsync();
-                            }
+                            await transaction.RollbackAsync();
+                            Console.WriteLine($"Error during transaction: {err.Message}");
+                            return StatusCode(500, $"Internal server error during transaction: {err.Message}");
                         }
                     }
-
-                    await transaction.CommitAsync();
-                    return Ok(new { message = "Line stops added or updated successfully" });
-                }
-                catch (Exception err)
-                {
-                    await transaction.RollbackAsync();
-                    Console.WriteLine($"Error during transaction: {err.Message}");
-                    return StatusCode(500, $"Internal server error during transaction: {err.Message}");
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in AddOrUpdateLineStops: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error in AddOrUpdateLineStops: {ex.Message}");
-        return StatusCode(500, $"Internal server error: {ex.Message}");
-    }
-}
 
 
         [HttpDelete("RemoveLineStops")]
@@ -211,7 +210,6 @@ public async Task<ActionResult> AddOrUpdateLineStops([FromBody] List<AddLineStop
 
     }   
 
-    // DTO dla przesyłanych danych
     public class AddLineStopDto
     {
         public int? id { get; set; }
@@ -221,13 +219,12 @@ public async Task<ActionResult> AddOrUpdateLineStops([FromBody] List<AddLineStop
         public int Order { get; set; }
     }
 
-    // Model danych
     public class LineStop
     {
         public int Id { get; set; }
         public int LineId { get; set; }
         public int StopId { get; set; }
-        public string? StopName { get; set; } // Dodano StopName
+        public string? StopName { get; set; } 
         public int Direction { get; set; }
         public int Order { get; set; }
     }

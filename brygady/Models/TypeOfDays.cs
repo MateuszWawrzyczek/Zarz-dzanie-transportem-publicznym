@@ -5,7 +5,8 @@ namespace Brygady.Data
     {
         public int id {get; set;}
         public string? name {get; set;}
-        public TypeOfDays(string na){
+        public TypeOfDays(string na)
+        {
             name=na;
         }
         public TypeOfDays(){}

@@ -199,9 +199,4 @@ namespace Brygady.Controllers
         }
 
     }
-
-
-    
-
-
 }

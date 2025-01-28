@@ -278,8 +278,5 @@ namespace Brygady.Controllers
                 return StatusCode(500, "Wewnętrzny błąd serwera.");
             }
         }
-        
-
-
     }
 }

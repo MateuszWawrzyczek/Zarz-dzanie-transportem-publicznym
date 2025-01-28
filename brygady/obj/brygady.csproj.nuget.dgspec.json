@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\matwa\\Documents\\dotnet\\brygady\\brygady.csproj": {}
+    "C:\\Users\\matwa\\Documents\\BusMan\\brygady\\brygady.csproj": {}
   },
   "projects": {
-    "C:\\Users\\matwa\\Documents\\dotnet\\brygady\\brygady.csproj": {
+    "C:\\Users\\matwa\\Documents\\BusMan\\brygady\\brygady.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\matwa\\Documents\\dotnet\\brygady\\brygady.csproj",
+        "projectUniqueName": "C:\\Users\\matwa\\Documents\\BusMan\\brygady\\brygady.csproj",
         "projectName": "brygady",
-        "projectPath": "C:\\Users\\matwa\\Documents\\dotnet\\brygady\\brygady.csproj",
+        "projectPath": "C:\\Users\\matwa\\Documents\\BusMan\\brygady\\brygady.csproj",
         "packagesPath": "C:\\Users\\matwa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\matwa\\Documents\\dotnet\\brygady\\obj\\",
+        "outputPath": "C:\\Users\\matwa\\Documents\\BusMan\\brygady\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
