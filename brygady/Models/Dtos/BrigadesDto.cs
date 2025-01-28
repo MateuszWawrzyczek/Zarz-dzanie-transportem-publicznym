@@ -6,8 +6,6 @@ namespace Brygady.Data{
         public int workingTime {get; set;}
         public string? shortageName { get; set; }
         public List<BrigadeTripsDto>? trips {get; set;}
-            
-        
     }
     public class BrigadeTripsDto{
         public int brigade_trip_id {get; set;}
